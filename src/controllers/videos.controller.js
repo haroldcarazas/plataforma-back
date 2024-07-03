@@ -1,5 +1,7 @@
 import videoModel from '../models/Video.js'
 import { Types } from 'mongoose'
+import fs from 'node:fs/promises'
+import path from 'node:path'
 
 export const index = async (req, res) => {
   try {
@@ -49,9 +51,15 @@ export const store = async (req, res) => {
 export const update = async (req, res) => {
   try {
     const { id } = req.params
-    const { titulo, usuario, video } = req.body
+    const { titulo, usuario } = req.body
+    const { filename: video } = req.file
 
     const videoDB = await videoModel.findOne({ _id: id }).select('-__v')
+
+    // Eliminar video existente
+    const rutaVideo = path.resolve(`./uploads/${videoDB.video}`)
+    await fs.unlink(rutaVideo)
+
     videoDB.titulo = titulo
     videoDB.usuario = usuario
     videoDB.video = video

@@ -8,7 +8,7 @@ const router = Router()
 router.get('/', index)
 router.get('/:id', validateVideoID, getById)
 router.post('/', uploadVideos.single('video'), handleUploadVideoError, validateDataVideo, store)
-router.put('/:id', uploadVideos.single('video'), validateVideoID, validateDataVideo, update)
+router.put('/:id', validateVideoID, uploadVideos.single('video'), handleUploadVideoError, validateDataVideo, update)
 router.delete('/:id', validateVideoID, remove)
 
 export default router
