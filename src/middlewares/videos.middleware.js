@@ -30,3 +30,11 @@ export const validateVideoID = async (req, res, next) => {
     res.status(500).json({ message: 'Error al validar el ID' })
   }
 }
+
+export const handleUploadVideoError = (err, req, res, next) => {
+  if (err) {
+    return res.status(400).json({ message: err.message })
+  } else {
+    next()
+  }
+}

@@ -10,4 +10,14 @@ const storage = multer.diskStorage({
   }
 })
 
-export const uploadVideos = multer({ storage })
+const videoFilter = (req, file, cb) => {
+  const { mimetype } = file
+
+  if (mimetype.includes('video')) {
+    cb(null, true)
+  } else {
+    cb(new Error('Solo se permiten archivos de video'))
+  }
+}
+
+export const uploadVideos = multer({ storage, fileFilter: videoFilter })

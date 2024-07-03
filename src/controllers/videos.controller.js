@@ -1,4 +1,3 @@
-import usuarioModel from '../models/Usuario.js'
 import videoModel from '../models/Video.js'
 import { Types } from 'mongoose'
 
@@ -28,14 +27,8 @@ export const getById = async (req, res) => {
 
 export const store = async (req, res) => {
   try {
-    const { titulo, usuario, video } = req.body
-
-    // Validar el ID
-    if (!Types.ObjectId.isValid(usuario)) return res.status(400).json({ message: 'ID inválido' })
-
-    // Validar que exista el usuario
-    const usuarioDb = await usuarioModel.findOne({ _id: usuario })
-    if (!usuarioDb) return res.status(404).json({ message: 'Usuario no encontrado' })
+    const { titulo, usuario } = req.body
+    const { filename: video } = req.file
 
     // Crear el registro del video
     const videoNuevo = await videoModel.create({
