@@ -86,3 +86,24 @@ export const remove = async (req, res) => {
     return res.status(500).json({ message: 'Error interno' })
   }
 }
+
+export const sendVideo = async (req, res) => {
+  try {
+    const { id } = req.params
+
+    const video = await videoModel.findOne({ _id: id }).populate('usuario').select('-__v')
+    if (!video) return res.status(404).json({ message: 'Video no encontrado' })
+
+    const { video: videoNombre } = video
+    const rutaVideo = path.resolve(`./uploads/${videoNombre}`)
+    const existeVideo = await fs.stat(rutaVideo)
+    if (!existeVideo) {
+      return res.status(404).json({ message: 'El video no existe' })
+    }
+
+    res.sendFile(rutaVideo)
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({ message: 'Error interno' })
+  }
+}
