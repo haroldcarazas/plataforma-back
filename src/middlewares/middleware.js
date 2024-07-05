@@ -13,6 +13,7 @@ export const validateID = (req, res, next) => {
 export const validateCORS = (req, res, next) => {
   try {
     const { origin } = req.headers
+    console.log(origin)
     const allowed = ['http://localhost:5173', 'https://plataforma-front-lime.vercel.app']
 
     if (allowed.includes(origin) || !origin) {
