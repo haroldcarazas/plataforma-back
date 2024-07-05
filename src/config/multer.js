@@ -1,12 +1,20 @@
 import multer from 'multer'
+import fs from 'node:fs/promises'
+import path from 'node:path'
 
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, './uploads')
+  destination: async function (req, file, cb) {
+    try {
+      const carpeta = path.resolve('./uploads')
+      await fs.mkdir(carpeta, { recursive: true })
+      cb(null, carpeta)
+    } catch (error) {
+      cb(error, null)
+    }
   },
   filename: function (req, file, cb) {
     const { originalname } = file
-    const nombreFormateado = originalname.trim().replace(' ', '').toLowerCase()
+    const nombreFormateado = originalname.trim().replace(/ /g, '').toLowerCase()
     const newName = Date.now() + '-' + nombreFormateado
     cb(null, newName)
   }
