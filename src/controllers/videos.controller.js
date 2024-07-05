@@ -1,5 +1,4 @@
 import videoModel from '../models/Video.js'
-import { Types } from 'mongoose'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 
@@ -75,10 +74,13 @@ export const update = async (req, res) => {
 export const remove = async (req, res) => {
   try {
     const { id } = req.params
-    if (!Types.ObjectId.isValid(id)) return res.status(400).json({ message: 'ID inválido' })
 
     const video = await videoModel.findOneAndDelete({ _id: id })
     if (!video) return res.status(404).json({ message: 'Video no encontrado' })
+
+    // Eliminar video existente
+    const rutaVideo = path.resolve(`./uploads/${video.video}`)
+    await fs.unlink(rutaVideo)
 
     res.json({ message: 'Video eliminado', data: video })
   } catch (error) {
