@@ -9,8 +9,8 @@ export const index = async (req, res) => {
 export const getById = async (req, res) => {
   try {
     const { id } = req.params
-    const curso = await cursoModel.findById(id).populate('maestro').populate('alumnos')
-    const examenes = await examenModel.find({ curso: id })
+    const curso = await cursoModel.findById(id).populate('maestro', '-password').populate('alumnos', '-password')
+    const examenes = await examenModel.find({ curso: id }).select('nombre')
 
     const cursoConExamenes = {
       ...curso._doc,
