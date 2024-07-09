@@ -4,6 +4,7 @@ import { connectDB } from './config/db.js'
 import { validateCORS } from './middlewares/middleware.js'
 import videosRoutes from './routes/videos.routes.js'
 import usuariosRoutes from './routes/usuarios.routes.js'
+import cursosRoutes from './routes/cursos.routes.js'
 
 connectDB()
 
@@ -13,5 +14,6 @@ app.use(express.json())
 app.use(validateCORS)
 app.use('/api/videos', videosRoutes)
 app.use('/api/usuarios', usuariosRoutes)
+app.use('/api/cursos', cursosRoutes)
 
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`))
