@@ -6,16 +6,20 @@ import videosRoutes from './routes/videos.routes.js'
 import usuariosRoutes from './routes/usuarios.routes.js'
 import cursosRoutes from './routes/cursos.routes.js'
 import examenesRoutes from './routes/examenes.routes.js'
+import authRoutes from './routes/auth.routes.js'
+import morgan from 'morgan'
 
 connectDB()
 
 const app = express()
 
 app.use(express.json())
+app.use(morgan('dev'))
 app.use(validateCORS)
 app.use('/api/videos', videosRoutes)
 app.use('/api/usuarios', usuariosRoutes)
 app.use('/api/cursos', cursosRoutes)
 app.use('/api/examenes', examenesRoutes)
+app.use('/api/auth', authRoutes)
 
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`))

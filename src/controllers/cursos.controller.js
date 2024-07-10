@@ -23,3 +23,14 @@ export const getById = async (req, res) => {
     res.status(500).json({ message: 'Error interno' })
   }
 }
+
+export const getByUsuarioId = async (req, res) => {
+  try {
+    const { id } = req.params
+    const cursos = await cursoModel.find({ maestro: id }).select('-maestro -alumnos')
+    res.json(cursos)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ message: 'Error interno' })
+  }
+}

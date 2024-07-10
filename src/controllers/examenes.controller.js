@@ -10,6 +10,14 @@ export const index = async (req, res) => {
 export const getById = async (req, res) => {
   try {
     const { id } = req.params
+    const { recurso } = req.query
+    console.log(recurso)
+
+    if (!recurso) {
+      const examen = await examenModel.findById(id).select('nombre preguntas curso')
+      return res.json(examen)
+    }
+
     const examen = await examenModel.findById(id).select('nombre curso').populate('curso')
     const curso = await cursoModel.findById(examen.curso._id).populate('alumnos', '-password')
 
